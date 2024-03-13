@@ -1,4 +1,4 @@
-import socket, threading
+import socket, threading, json
 
 # Global variable that mantain client's connections
 connections = []
@@ -22,7 +22,12 @@ def handle_user_connection(connection: socket.socket, address: str) -> None:
 
                 # Build message format and broadcast to users connected on server
                 msg_to_send = f'From {address[0]}:{address[1]} - {msg.decode()}'
-                broadcast(msg_to_send, connection)
+                # broadcast(msg_to_send, connection)
+                test_json = {
+                    "points": [[43.94554359908121, -78.89668560139657], [43.944835864796055, -78.89603759292302],
+                               [43.944804666633644, -78.8969562996474], [43.9455124009188, -78.89760432372148],
+                               [43.945528, -78.897145]], "altitude": 50}
+                connection.send(json.dumps(test_json).encode('utf-8'))
 
             # Close connection if no message was sent
             else:
@@ -72,7 +77,7 @@ def server() -> None:
         to handle their messages
     '''
 
-    LISTENING_PORT = 12000
+    LISTENING_PORT = 9999
 
     try:
         # Create server and specifying that it can only handle 4 connections by time!

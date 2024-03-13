@@ -1,11 +1,10 @@
 import socket
-import sys
 import selectors
-import time
 import types
+import json
 
-HOST = "10.0.0.152"
-PORT = 60000
+HOST = "192.168.2.46"
+PORT = 9999
 sel = selectors.DefaultSelector()
 
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,7 +28,7 @@ def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
     if mask & selectors.EVENT_READ:
-        recv_data = sock.recv(524288)
+        recv_data = sock.recv(8388608)
         if recv_data:
             data.outb += recv_data
         else:
@@ -41,6 +40,7 @@ def service_connection(key, mask):
             print(f"{data.outb!r}")
             sent = sock.send(data.outb)
             data.outb = data.outb[sent:]
+
 
 try:
     while True:
