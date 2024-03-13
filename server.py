@@ -4,7 +4,7 @@ import selectors
 import time
 import types
 
-HOST = "192.168.1.140"
+HOST = "10.0.0.152"
 PORT = 60000
 sel = selectors.DefaultSelector()
 
@@ -29,7 +29,7 @@ def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
     if mask & selectors.EVENT_READ:
-        recv_data = sock.recv(16384)
+        recv_data = sock.recv(524288)
         if recv_data:
             data.outb += recv_data
         else:
